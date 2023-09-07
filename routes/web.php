@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,5 @@ Route::get('/home', function () {
 Route::get('/menu1', function () {
     return view('menu1');
 });
+
+Route::get('/boom', [PostController::class, 'boomesport']);
