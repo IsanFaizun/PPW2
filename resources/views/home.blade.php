@@ -7,11 +7,8 @@
  
 <!-- Pengisian section panjang -->
 @section('content')
-	<h2>This is Homepage</h2>
+	<h2>Ini adalah minggu ke-4</h2>
     <p>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-		Illo, repellendus. Dolor odio labore voluptatum repellendus 
-		quas eius ipsam, aspernatur corporis deserunt nobis accusamus 
-		earum? Voluptate porro ducimus perspiciatis suscipit eaque.
+		Minggu ini membahas Controller dan Migration
 	</p>
 @endsection

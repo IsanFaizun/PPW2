@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -25,12 +26,12 @@ Route::get('/about', function () {
     ]);
 });
 
-Route::get('/home', function () {
-    return view('home');
-});
 
-Route::get('/menu1', function () {
+Route::get('/menu', function () {
     return view('menu1');
 });
 
-Route::get('/boom', [PostController::class, 'boomesport']);
+// Versi 7
+Route::get('home', 'TryController@toHome');
+
+Route::get('/home', [TryController::class, 'toHome']);

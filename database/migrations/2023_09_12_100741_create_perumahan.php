@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('perumahan', function (Blueprint $table) {
-            $table->increments("id_perumahan");
-            $table->integer("luas_perumahan");
-            $table->integer("harga_perumahan");
+        Schema::create('komplek_perumahan', function (Blueprint $table) {
+            $table->increments("id_perum");
+            $table->integer("luas_perum");
+            $table->integer("harga_perum");
             $table->timestamps();
         });
     }
