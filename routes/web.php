@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TokoBukuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,17 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', function () {
-    return view('about', [
-        "name" => "lala",
-        "email" => "lala@gmail.com"
-    ]);
-});
-
-Route::get('/home', function () {
-    return view('home');
-});
-
-Route::get('/menu1', function () {
-    return view('menu1');
-});
+Route::get('/toko_buku', [TokoBukuController::class, 'index']);
