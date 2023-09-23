@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <title>Index</title>
-</head>
-<body>
+@extends('master')
+
+@section('title', 'Index')
+
+@section('content')
+<h4>Data Buku</h4>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -21,14 +18,23 @@
         <tbody>
             @foreach($data_buku as $buku)
                 <tr>
-                    <td>{{$buku->id}}</td>
+                    <td>{{++$no}}</td>
                     <td>{{$buku->judul}}</td>
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 2, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    <td>
+                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
+                            @csrf
+                            <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Hapus</button>
+                            <a class="btn btn-secondary" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-</body>
-</html>
+<p align="right"><a href="{{ route('buku.create')}}" class="btn btn-primary">Tambah Buku</a></p>
+<p>{{ "Jumlah data: ".$jumlah_data }} buku</p>
+<p>{{ "Total harga: Rp".number_format($total_harga, 2, ',', '.') }}</p>
+@endsection

@@ -19,3 +19,11 @@ Route::get('/', function () {
 });
 
 Route::get('/toko_buku', [TokoBukuController::class, 'index']);
+// Create
+Route::get('/toko_buku/create', [TokoBukuController::class, 'create'])->name('buku.create');
+Route::post('/toko_buku', [TokoBukuController::class, 'store'])->name('buku.store');
+// Delete
+Route::post('/toko_buku/destroy/{id}', [TokoBukuController::class, 'destroy'])->name('buku.destroy');
+// Update
+Route::get('/toko_buku/edit/{id}', [TokoBukuController::class, 'edit'])->name('buku.edit');
+Route::post('/toko_buku/upadate/{id}', [TokoBukuController::class, 'update'])->name('buku.update');
