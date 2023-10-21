@@ -3,7 +3,9 @@
 @section('title', 'Index')
 
 @section('content')
-<h4>Data Buku</h4>
+@if(count($data_buku))
+    <div class="alert alert-success">Ditemukan <strong>{{ count($data_buku) }}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
+    <h4>Data Buku</h4>
     @if(Session::has('pesan'))
         <div class="alert alert-success">{{ Session::get('pesan') }}</div>
     @endif
@@ -47,5 +49,7 @@
 <p align="right"><a href="{{ route('buku.create')}}" class="btn btn-primary">Tambah Buku</a></p>
 <div>{{ $data_buku->links() }}</div>
 <p>{{ "Jumlah buku: ".$jumlah_buku }} buku</p>
-<p>{{ "Total harga: Rp".number_format($total_harga, 0, ',', '.') }}</p>
+@else
+    <div class="alert alert-warning"><h4>{{ $cari }} tidak ditmukan</h4> <a href="/toko_buku" class="btn btn-warning">Kembali</a></div>
+@endif
 @endsection
