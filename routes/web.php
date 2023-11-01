@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BukuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Generated Login-Register Routes
+Route::get('/dashboard', [BukuController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,3 +29,15 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/toko_buku', [BukuController::class, 'index']);
+// Create
+Route::get('/toko_buku/create', [BukuController::class, 'create'])->name('buku.create');
+Route::post('/toko_buku', [BukuController::class, 'store'])->name('buku.store');
+// Delete
+Route::post('/toko_buku/destroy/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+// Update
+Route::get('/toko_buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
+Route::post('/toko_buku/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
+// Search
+Route::get('/toko_buku/search', [BukuController::class, 'search'])->name('buku.search');

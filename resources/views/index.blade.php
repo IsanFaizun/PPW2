@@ -14,6 +14,7 @@
         <input type="text" name="kata" class="form-control" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
         <button type="submit" class="btn btn-primary" style="width: 110px; float: right;">Cari</button>
     </form>
+    <br><br><br>
     <table class="table table-striped">
         <thead>
             <tr>
