@@ -23,7 +23,9 @@
                 <th>Penulis</th>
                 <th>Harga</th>
                 <th>Tgl. Terbit</th>
+                @if(Auth::check() && Auth::user()->level == 'admin')
                 <th>Action</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -34,6 +36,7 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    @if(Auth::check() && Auth::user()->level == 'admin')
                     <td>
                         <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                             @csrf
@@ -41,11 +44,14 @@
                             <a class="btn btn-secondary" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
                         </form>
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
     </table>
+@if(Auth::check() && Auth::user()->level == 'admin')
 <p align="right"><a href="{{ route('buku.create')}}" class="btn btn-primary">Tambah Buku</a></p>
+@endif
 <div>{{ $data_buku->links() }}</div>
 <p>{{ "Jumlah buku: ".$jumlah_buku }} buku</p>
 <p>{{ "Total harga: Rp".number_format($total_harga, 0, ',', '.') }}</p>
