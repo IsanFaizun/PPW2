@@ -50,6 +50,8 @@
                             @foreach($buku->galleries()->get() as $gallery)
                                 <div class="col">
                                     <img src="{{ asset($gallery->path) }}" alt="" width="400"/>
+                                </div>
+                                <div>
                                     <a href="{{ route('buku.deleteGallery', $gallery->id) }}" class="btn btn-dark btn-sm">Delete Gallery</a>
                                 </div>
                             @endforeach
