@@ -43,3 +43,4 @@ Route::middleware('admin')->group(function () {
     Route::get('/toko_buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/toko_buku/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
 });
+Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');

@@ -31,6 +31,10 @@
                     <td><input type="text" name="tgl_terbit" class="date form-control" placeholder="yyyy/mm/dd"></td>
                 </tr>
                 <tr>
+                    <td>Thumbnail</td>
+                    <td><input type="file" name="thumbnail" class="form-control"></td>
+                </tr>
+                <tr>
                     <td><button type="submit" class="btn btn-primary">Simpan</button></td>
                     <td><a href="/toko_buku" class="btn btn-secondary">Batal</a></td>
                 </tr>
