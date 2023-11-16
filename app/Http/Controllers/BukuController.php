@@ -70,19 +70,25 @@ class BukuController extends Controller
             'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
-        $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
-        $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+        if ($request->file('thumbnail')) {
+            $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+            $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+            Image::make(storage_path().'/app/public/uploads/'.$fileName)->fit(240,320)->save();
+        };
 
-        Image::make(storage_path().'/app/public/uploads/'.$fileName)->fit(240,320)->save();
+        $data = [
+            'judul' => $request->judul,
+            'penulis' => $request->penulis,
+            'tgl_terbit' => $request->tgl_terbit,
+            'harga' => $request->harga,
+        ];
 
-        $buku->update([
-            'judul' => $request -> judul,
-            'penulis' => $request -> penulis,
-            'harga' => $request -> harga,
-            'tgl_terbit' => $request -> tgl_terbit,
-            'filename' => $fileName,
-            'filepath' => '/storage/' . $filePath
-        ]);
+        if ($request->file('thumbnail')) {
+            $data['filename'] = $fileName;
+            $data['filepath'] = '/storage/'.$filePath;
+        }
+
+        $buku->update($data);
         
         if ($request->file('gallery')) {
             foreach($request->file('gallery') as $key => $file) {
@@ -94,28 +100,6 @@ class BukuController extends Controller
                     'path' => '/storage/'. $filePath,
                     'foto' => $fileName,
                     'buku_id' => $id
-                ]);
-            }
-        }
-
-        if ($request->file('thumbnail')) {
-            $buku->update([
-                'judul' => $request->judul,
-                'penulis' => $request->penulis,
-                'harga' => $request->harga,
-                'tgl_terbit' => $request->tgl_terbit,
-                'filename' => $fileName,
-                'filepath' => '/storage/' . $filePath
-            ]);
-        } else {
-            if ($buku->filepath) {
-                $buku->update([
-                    'judul' => $request->judul,
-                    'penulis' => $request->penulis,
-                    'harga' => $request->harga,
-                    'tgl_terbit' => $request->tgl_terbit,
-                    'filename' => $buku->filename,
-                    'filepath' => $buku->filepath
                 ]);
             }
         }
