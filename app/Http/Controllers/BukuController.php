@@ -124,4 +124,9 @@ class BukuController extends Controller
 
         return redirect()->back();
     }
+
+    public function detailBuku($id) {
+        $buku = Buku::find($id);
+        return view('buku.detail-buku', compact('buku'));
+    }
 }

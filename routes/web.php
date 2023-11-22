@@ -30,17 +30,18 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/toko_buku', [BukuController::class, 'index']);
-Route::get('/toko_buku/search', [BukuController::class, 'search'])->name('buku.search');
+Route::get('/toko-buku', [BukuController::class, 'index']);
+Route::get('/toko-buku/search', [BukuController::class, 'search'])->name('buku.search');
+Route::get('/detail-buku/{id}', [BukuController::class, 'detailBuku'])->name('buku.detail-buku');
 
 Route::middleware('admin')->group(function () {
     // Create
-    Route::get('/toko_buku/create', [BukuController::class, 'create'])->name('buku.create');
-    Route::post('/toko_buku', [BukuController::class, 'store'])->name('buku.store');
+    Route::get('/toko-buku/create', [BukuController::class, 'create'])->name('buku.create');
+    Route::post('/toko-buku', [BukuController::class, 'store'])->name('buku.store');
     // Delete
-    Route::post('/toko_buku/destroy/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    Route::post('/toko-buku/destroy/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
     // Update
-    Route::get('/toko_buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
-    Route::post('/toko_buku/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
+    Route::get('/toko-buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
+    Route::post('/toko-buku/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
+    Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');
 });
-Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');

@@ -45,15 +45,14 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
-                    @if(Auth::check() && Auth::user()->level == 'admin')
                     <td>
-                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
-                            @csrf
-                            <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Hapus</button>
-                            <a class="btn btn-secondary" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
-                        </form>
+                        @if(Auth::check() && Auth::user()->level == 'admin')
+                        @csrf
+                        <a class="btn btn-danger" href="{{ route('buku.destroy', $buku->id) }}" onclick="return confirm('Are you sure?')">Hapus</a>
+                        <a class="btn btn-warning" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
+                        @endif
+                        <a class="btn btn-secondary" href="{{ route('buku.detail-buku', $buku->id) }}">Lihat</a>
                     </td>
-                    @endif
                 </tr>
             @endforeach
         </tbody>

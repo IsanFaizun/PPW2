@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.css') }}">
-    <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('dist/css/lightbox.min.css') }}">
     <title>@yield('title')</title>
 </head>
 <body>
@@ -22,5 +21,8 @@
         })
     </script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('dist/js/lightbox-plus-jquery.min.js') }}"></script>
 </body>
 </html>
