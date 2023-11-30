@@ -20,4 +20,7 @@ class Buku extends Model
     public function photos(){
         return $this->hasMany('App\Buku', 'id_buku', 'id');
     }
+    public function users(){
+        return $this -> belongsToMany ( User::class)->withPivot ( 'rating' ) ;
+    }
 }

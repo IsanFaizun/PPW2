@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 // Generated Login-Register Routes
 Route::get('/dashboard', [BukuController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/favourite', [BukuController::class, 'favourite'])->middleware(['auth', 'verified'])->name('favourite');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +34,7 @@ require __DIR__.'/auth.php';
 Route::get('/toko-buku', [BukuController::class, 'index']);
 Route::get('/toko-buku/search', [BukuController::class, 'search'])->name('buku.search');
 Route::get('/detail-buku/{id}', [BukuController::class, 'detailBuku'])->name('buku.detail-buku');
+Route::post('toko-buku', [BukuController::class, 'rate']);
 
 Route::middleware('admin')->group(function () {
     // Create

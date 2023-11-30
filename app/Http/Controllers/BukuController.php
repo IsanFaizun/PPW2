@@ -23,6 +23,15 @@ class BukuController extends Controller
         return view('dashboard', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
     }
 
+    public function favourite(){
+        $batas = 5;
+        $jumlah_buku = Buku::count('id');
+        $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
+        $no = $batas * ($data_buku->currentPage()-1);
+
+        return view('favourite', compact('data_buku', 'no', 'jumlah_buku',));
+    }
+
     public function create(){
         return view('buku.create');
     }
@@ -128,5 +137,33 @@ class BukuController extends Controller
     public function detailBuku($id) {
         $buku = Buku::find($id);
         return view('buku.detail-buku', compact('buku'));
+    }
+
+    public function rate(Request $request, Buku $buku) {
+        $user = $request->user();
+
+        $rate = $this->rateBook ($user, $buku, $request->value);
+        $this->setBookRate ($buku);
+
+        return [
+            'id' => $buku->id,
+            'value' => $buku->rate,
+            'count' => $buku->users->count(),
+            'rate' => $rate
+        ];
+    }
+
+    public function rateImage($user, $buku, $value) {
+        $rate = $buku->users()->where('users.id', $user->id)->pluck('rating')->first();
+
+        if($rate) {
+            if($rate !== $value) {
+                $buku->users ()->updateExistingPivot ($user->id, ['rating' => $value]);
+            }
+        } else {
+            $buku->users ()->attach ($user->id, ['rating' => $value]);
+        }
+
+        return $rate;
     }
 }

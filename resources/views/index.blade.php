@@ -24,9 +24,8 @@
                 <th>Penulis</th>
                 <th>Harga</th>
                 <th>Tgl. Terbit</th>
-                @if(Auth::check() && Auth::user()->level == 'admin')
-                <th>Action</th>
-                @endif
+                <th>Rating</th>
+                <th colspan=2>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +44,7 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    <td></td>
                     <td>
                         @if(Auth::check() && Auth::user()->level == 'admin')
                         @csrf
@@ -52,6 +52,16 @@
                         <a class="btn btn-warning" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
                         @endif
                         <a class="btn btn-secondary" href="{{ route('buku.detail-buku', $buku->id) }}">Lihat</a>
+                    </td>
+                    <td>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Rate</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </td>
                 </tr>
             @endforeach
@@ -61,6 +71,8 @@
 <p align="right"><a href="{{ route('buku.create')}}" class="btn btn-primary">Tambah Buku</a></p>
 @endif
 <div>{{ $data_buku->links() }}</div>
+@if(Auth::check() && Auth::user()->level == 'admin')
 <p>{{ "Jumlah buku: ".$jumlah_buku }} buku</p>
 <p>{{ "Total harga: Rp".number_format($total_harga, 0, ',', '.') }}</p>
+@endif
 @endsection
