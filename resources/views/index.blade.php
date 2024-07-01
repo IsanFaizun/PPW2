@@ -8,7 +8,7 @@
         <div class="alert alert-success">{{ Session::get('pesan') }}</div>
     @endif
     @if(Session::has('pesanHapus'))
-        <div class="alert alert-danger">{{ Session::get('pesan') }}</div>
+        <div class="alert alert-danger">{{ Session::get('pesanHapus') }}</div>
     @endif
     <form action="{{ route('buku.search') }}" method="get">@csrf
         <input type="text" name="kata" class="form-control" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
