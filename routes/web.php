@@ -41,3 +41,5 @@ Route::middleware('admin')->group(function () {
 });
 // Search
 Route::get('/dashboard/search', [BukuController::class, 'search'])->name('buku.search');
+// Delete galeri
+Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');

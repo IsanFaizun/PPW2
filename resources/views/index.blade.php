@@ -30,9 +30,9 @@
             @foreach($data_buku as $buku)
                 <tr>
                     <td>{{++$no}}</td>
-                    <td>
+                    <td style="width: 300px;">
                         @if ( $buku->filepath )
-                        <div class="relative h-50 w-50">
+                        <div class="relative h-50">
                             <img class="h-50 w-50 object-cover object-center"
                             src="{{ asset($buku->filepath) }}" alt="">
                         </div>
