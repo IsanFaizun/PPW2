@@ -11,7 +11,7 @@
                 @endforeach
             </ul>
         @endif
-        <form action="{{ route('buku.store') }}" method="POST">
+        <form action="{{ route('buku.store') }}" method="POST", enctype="multipart/form-data">
             @csrf
             <table>
                 <tr>
@@ -29,6 +29,10 @@
                 <tr>
                     <td>Tgl. Terbit</td>
                     <td><input type="text" name="tgl_terbit" class="date form-control" placeholder="yyyy/mm/dd"></td>
+                </tr>
+                <tr>
+                    <td>Thumbnail</td>
+                    <td><input type="file" name="thumbnail" class="form-control"></td>
                 </tr>
                 <tr>
                     <td><button type="submit" class="btn btn-primary">Simpan</button></td>

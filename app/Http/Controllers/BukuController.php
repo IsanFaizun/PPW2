@@ -54,11 +54,21 @@ class BukuController extends Controller
 
     public function update(Request $request, $id){
         $buku = Buku::find($id);
+
+        $request->validate([
+            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
+        ]);
+
+        $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+        $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+
         $buku->update([
             'judul' => $request -> judul,
             'penulis' => $request -> penulis,
             'harga' => $request -> harga,
-            'tgl_terbit' => $request -> tgl_terbit
+            'tgl_terbit' => $request -> tgl_terbit,
+            'filename' => $fileName,
+            'filepath' => '/storage' . $filePath
         ]);
         return redirect('/toko_buku')->with('pesan','Data Buku Berhasil Diubah');
     }
