@@ -32,8 +32,8 @@
                     <td>{{++$no}}</td>
                     <td>
                         @if ( $buku->filepath )
-                        <div class="relative h-75 w-75">
-                            <img class="h-full w-full object-cover object-center"
+                        <div class="relative h-50 w-50">
+                            <img class="h-50 w-50 object-cover object-center"
                             src="{{ asset($buku->filepath) }}" alt="">
                         </div>
                         @endif

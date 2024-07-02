@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class BukuController extends Controller
 {
@@ -30,21 +31,28 @@ class BukuController extends Controller
             'judul' => 'required|string',
             'penulis' => 'required|string|max:30',
             'harga' => 'required|numeric',
-            'tgl_terbit' => 'required|date'
+            'tgl_terbit' => 'required|date',
+            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
         ]);
+        $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+        $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+        
         Buku::create([
             'judul' => $request -> judul,
             'penulis' => $request -> penulis,
             'harga' => $request -> harga,
-            'tgl_terbit' => $request -> tgl_terbit
+            'tgl_terbit' => $request -> tgl_terbit,
+            'filename' => $fileName,
+            'filepath' => '/storage/' . $filePath
+
         ]);
-        return redirect('/toko_buku')->with('pesan','Data Buku Berhasil Disimpan');
+        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Disimpan');
     }
 
     public function destroy($id){
         $buku = Buku::find($id);
         $buku->delete();
-        return redirect('/toko_buku')->with('pesanHapus','Data Buku Berhasil Dihapus');
+        return redirect('/dashboard')->with('pesanHapus','Data Buku Berhasil Dihapus');
     }
 
     public function edit($id){
@@ -68,9 +76,9 @@ class BukuController extends Controller
             'harga' => $request -> harga,
             'tgl_terbit' => $request -> tgl_terbit,
             'filename' => $fileName,
-            'filepath' => '/storage' . $filePath
+            'filepath' => '/storage/' . $filePath
         ]);
-        return redirect('/toko_buku')->with('pesan','Data Buku Berhasil Diubah');
+        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Diubah');
     }
 
     public function search(Request $request){

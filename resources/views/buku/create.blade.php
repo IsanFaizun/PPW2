@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td><button type="submit" class="btn btn-primary">Simpan</button></td>
-                    <td><a href="/toko_buku" class="btn btn-secondary">Batal</a></td>
+                    <td><a href="/dashboard" class="btn btn-secondary">Batal</a></td>
                 </tr>
             </table>
         </form>

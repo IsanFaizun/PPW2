@@ -4,7 +4,7 @@
 
 @section('content')
     <h2>Edit buku</h2>
-    <form action="{{ route('buku.update', $buku->id) }}" method="POST"method="POST", enctype="multipart/form-data">
+    <form action="{{ route('buku.update', $buku->id) }}" method="POST", enctype="multipart/form-data">
         @csrf
         <table>
             <tr>
@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <td><button type="submit" class="btn btn-primary">Simpan</button></td>
-                <td><a href="/toko_buku" class="btn btn-secondary">Batal</a></td>
+                <td><a href="/dashboard" class="btn btn-secondary">Batal</a></td>
             </tr>
         </table>
     </form>
