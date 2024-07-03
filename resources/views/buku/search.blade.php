@@ -1,8 +1,21 @@
 @extends('master')
 
 @section('title', 'Index')
+@section('header', 'Cari Buku')
 
 @section('content')
+    <style>
+        .primary-button{
+            background-color: #007bff;
+            padding-top: 6.5px;
+            padding-bottom: 6.5px;
+            border-radius: 5px;
+            color: white;
+        }
+        .primary-button:hover{
+            background-color: #0275d8;
+        }
+    </style>
 @if(count($data_buku))
     <div class="alert alert-success">Ditemukan <strong>{{ count($data_buku) }}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
     <h4>Data Buku</h4>
@@ -14,7 +27,7 @@
     @endif
     <form action="{{ route('buku.search') }}" method="get">@csrf
         <input type="text" name="kata" class="form-control" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
-        <button type="submit" class="btn btn-primary" style="width: 110px; float: right;">Cari</button>
+        <button type="submit" class="primary-button" style="width: 110px; float: right;">Cari</button>
     </form>
     <table class="table table-striped">
         <thead>
@@ -44,6 +57,7 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    @if(Auth::check() && Auth::user()->level == 'admin')
                     <td>
                         <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                             @csrf
@@ -51,6 +65,7 @@
                             <a class="btn btn-warning" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
                         </form>
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

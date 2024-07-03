@@ -20,7 +20,16 @@ class BukuController extends Controller
         $no = $batas * ($data_buku->currentPage()-1);
         $total_harga = Buku::sum('harga');
 
-        return view('dashboard', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
+        return view('index', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
+    }
+
+    public function list(){
+        $batas = 10;
+        $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
+        $batas = 10;
+        $no = $batas * ($data_buku->currentPage()-1);
+
+        return view('buku.list', compact('data_buku', 'no'));
     }
 
     public function create(){
@@ -47,13 +56,13 @@ class BukuController extends Controller
             'filepath' => '/storage/' . $filePath
 
         ]);
-        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Disimpan');
+        return redirect('/index')->with('pesan','Data Buku Berhasil Disimpan');
     }
 
     public function destroy($id){
         $buku = Buku::find($id);
         $buku->delete();
-        return redirect('/dashboard')->with('pesanHapus','Data Buku Berhasil Dihapus');
+        return redirect('/index')->with('pesanHapus','Data Buku Berhasil Dihapus');
     }
 
     public function edit($id){
@@ -103,7 +112,7 @@ class BukuController extends Controller
             }
         }
     
-        return redirect('/dashboard')->with('pesan', 'Data Buku Berhasil Diubah');
+        return redirect('/index')->with('pesan', 'Data Buku Berhasil Diubah');
     }
     
     

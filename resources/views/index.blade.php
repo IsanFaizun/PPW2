@@ -1,9 +1,21 @@
 @extends('master')
 
 @section('title', 'Index')
+@section('header', 'Data Buku')
 
 @section('content')
-<h4>Data Buku</h4>
+    <style>
+        .primary-button{
+            background-color: #007bff;
+            padding-top: 6.5px;
+            padding-bottom: 6.5px;
+            border-radius: 5px;
+            color: white;
+        }
+        .primary-button:hover{
+            background-color: #0275d8;
+        }
+    </style>
     @if(Session::has('pesan'))
         <div class="alert alert-success">{{ Session::get('pesan') }}</div>
     @endif
@@ -12,7 +24,7 @@
     @endif
     <form action="{{ route('buku.search') }}" method="get">@csrf
         <input type="text" name="kata" class="form-control mb-4" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
-        <button type="submit" class="btn btn-primary" style="width: 110px; float: right;">Cari</button>
+        <button type="submit" class="primary-button" style="width: 110px; float: right;">Cari</button>
     </form>
     <table class="table table-striped">
         <thead>
