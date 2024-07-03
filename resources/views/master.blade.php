@@ -10,11 +10,20 @@
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <title>@yield('title')</title>
+    
 </head>
 <body>
-    <div class="container mt-5">
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            @yield('header')
+        </h2>
+    </x-slot>
+
+    <div class="p-12">
         @yield('content')
     </div>
+</x-app-layout>
     <script type="text/javascript">
         $('.date').datepicker({
             format: 'yyyy/mm/dd',

@@ -1,9 +1,42 @@
 @extends('master')
 
 @section('title', 'Edit Buku')
+@section('header', 'Edit Buku')
+
 
 @section('content')
-    <h2>Edit buku</h2>
+    <style>
+        .primary-button{
+            background-color: #007bff;
+            padding-top: 6.5px;
+            padding-bottom: 6.5px;
+            padding-right: 10px;
+            padding-left: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .primary-button:hover{
+            background-color: #0275d8;
+        }
+        input[type="file"] {
+            background: white;
+            color: black;
+            border: 1px solid gray;
+        }
+        input[type="file"]::file-selector-button {
+            margin-right: 20px;
+            background: gainsboro;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: grey;
+            color: white;
+        }
+    </style>
     <form action="{{ route('buku.update', $buku->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <table>
@@ -72,8 +105,8 @@
             <tr>
                 <td>
                     <div class="col mt-3">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                        <a href="/dashboard" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="primary-button">Simpan</button>
+                        <a href="/index" class="btn btn-secondary">Batal</a>
                     </div>
                 </td>
             </tr>

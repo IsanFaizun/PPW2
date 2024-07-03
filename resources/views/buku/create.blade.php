@@ -1,9 +1,43 @@
 @extends('master')
 
 @section('title', 'Tambah Buku')
+@section('header', 'Tambah Buku')
+
 
 @section('content')
-    <h2>Tambah buku</h2>
+    <style>
+        .primary-button{
+            background-color: #007bff;
+            padding-top: 6.5px;
+            padding-bottom: 6.5px;
+            padding-right: 10px;
+            padding-left: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .primary-button:hover{
+            background-color: #0275d8;
+        }
+        input[type="file"] {
+            background: white;
+            color: black;
+            border: 1px solid gray;
+        }
+        input[type="file"]::file-selector-button {
+            margin-right: 20px;
+            background: gainsboro;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: grey;
+            color: white;
+        }
+
+    </style>
         @if (count($errors) > 0)
             <ul class="alert alert-danger px-5">
                 @foreach ($errors->all() as $error)
@@ -32,11 +66,11 @@
                 </tr>
                 <tr>
                     <td>Thumbnail</td>
-                    <td><input type="file" name="thumbnail" class="form-control"></td>
+                    <td><input type="file" id="thumbnail" name="thumbnail"></td>
                 </tr>
                 <tr>
-                    <td><button type="submit" class="btn btn-primary">Simpan</button></td>
-                    <td><a href="/dashboard" class="btn btn-secondary">Batal</a></td>
+                    <td><button type="submit" class="primary-button">Simpan</button></td>
+                    <td><a href="/index" class="btn btn-secondary">Batal</a></td>
                 </tr>
             </table>
         </form>
