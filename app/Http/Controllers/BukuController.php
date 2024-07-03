@@ -48,12 +48,46 @@ class BukuController extends Controller
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
         $batas = 10;
         $no = $batas * ($data_buku->currentPage()-1);
+        $data_buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
 
         return view('buku.list', compact('data_buku', 'no'));
     }
 
     public function detail($id){
         $buku = Buku::find($id);
+        $buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
         return view('buku.detail', compact('buku'));
     }
 
@@ -146,6 +180,23 @@ class BukuController extends Controller
         $data_buku = Buku::where('judul', 'like', "%".$cari."%")->orwhere('penulis', 'like', "%".$cari."%")->paginate($batas);
         $jumlah_buku = $data_buku->count();
         $no = $batas * ($data_buku->currentPage()-1);
+        $data_buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
 
         return view('buku.search', compact('data_buku', 'no', 'jumlah_buku', 'cari'));
     }

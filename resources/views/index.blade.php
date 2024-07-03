@@ -57,7 +57,7 @@
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
                     <td>
                         @if($buku->jumlah_user_rating > 0)
-                            <p>Average Rating: {{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
+                            <p>{{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
                         @else
                             <p>Not Available</p>
                         @endif

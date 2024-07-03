@@ -14,6 +14,11 @@
             @endif
             <div>
                 <p class="text-lg font-medium mb-2">{{$buku->judul}}</p>
+                @if($buku->jumlah_user_rating > 0)
+                    <p class="text-lg font-medium mb-2">{{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
+                @else
+                    <p class="text-lg font-medium mb-2">Not Available</p>
+                @endif
                 <a href="{{ route('buku.detail', $buku->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Lihat detail</a>
             </div>
         </div>
