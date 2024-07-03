@@ -23,12 +23,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/detail/{id}/rate', [BukuController::class, 'rate'])->name('buku.rate');
 });
 
 require __DIR__.'/auth.php';
 
 Route::get('/list', [BukuController::class, 'list'])->name('buku.list');
 Route::get('/detail/{id}', [BukuController::class, 'detail'])->name('buku.detail');
+
 
 Route::middleware('admin')->group(function () {
     Route::get('/index', [BukuController::class, 'index'])->middleware(['auth', 'verified'])->name('index');

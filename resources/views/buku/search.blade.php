@@ -27,7 +27,7 @@
     @endif
     <form action="{{ route('buku.search') }}" method="get">@csrf
         <input type="text" name="kata" class="form-control" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
-        <button type="submit" class="primary-button" style="width: 110px; float: right;">Cari</button>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" style="width: 110px; float: right;">Cari</button>
     </form>
     <table class="table table-striped">
         <thead>
@@ -38,6 +38,7 @@
                 <th>Penulis</th>
                 <th>Harga</th>
                 <th>Tgl. Terbit</th>
+                <th>Rating</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -57,6 +58,13 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    <td>
+                    @if($buku->jumlah_user_rating > 0)
+                        <p>Average Rating: {{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
+                    @else
+                        <p>Not Available</p>
+                    @endif
+                    </td>
                     @if(Auth::check() && Auth::user()->level == 'admin')
                     <td>
                         <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
@@ -74,7 +82,9 @@
             @endforeach
         </tbody>
     </table>
+@if(Auth::check() && Auth::user()->level == 'admin')
 <p align="right"><a href="{{ route('buku.create')}}" class="btn btn-primary">Tambah Buku</a></p>
+@endif
 <div>{{ $data_buku->links() }}</div>
 <p>{{ "Jumlah buku: ".$jumlah_buku }} buku</p>
 @else

@@ -18,25 +18,6 @@
         .primary-button:hover{
             background-color: #0275d8;
         }
-        input[type="file"] {
-            background: white;
-            color: black;
-            border: 1px solid gray;
-        }
-        input[type="file"]::file-selector-button {
-            margin-right: 20px;
-            background: gainsboro;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: background .2s ease-in-out;
-        }
-        input[type="file"]::file-selector-button:hover {
-            background: grey;
-            color: white;
-        }
-
     </style>
         @if (count($errors) > 0)
             <ul class="alert alert-danger px-5">

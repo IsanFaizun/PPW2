@@ -18,24 +18,6 @@
         .primary-button:hover{
             background-color: #0275d8;
         }
-        input[type="file"] {
-            background: white;
-            color: black;
-            border: 1px solid gray;
-        }
-        input[type="file"]::file-selector-button {
-            margin-right: 20px;
-            background: gainsboro;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: background .2s ease-in-out;
-        }
-        input[type="file"]::file-selector-button:hover {
-            background: grey;
-            color: white;
-        }
     </style>
     <form action="{{ route('buku.update', $buku->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
