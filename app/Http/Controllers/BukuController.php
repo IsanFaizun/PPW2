@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Galeri;
+use App\Models\Rating;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class BukuController extends Controller
 {
@@ -17,7 +17,27 @@ class BukuController extends Controller
         $batas = 10;
         $jumlah_buku = Buku::count('id');
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
-        $no = $batas * ($data_buku->currentPage()-1);
+        $no = $batas * ($data_buku->currentPage() - 1);
+
+        $data_buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
+    
+
         $total_harga = Buku::sum('harga');
 
         return view('index', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
@@ -28,6 +48,23 @@ class BukuController extends Controller
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
         $batas = 10;
         $no = $batas * ($data_buku->currentPage()-1);
+        $data_buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
 
         return view('buku.list', compact('data_buku', 'no'));
     }
@@ -120,14 +157,29 @@ class BukuController extends Controller
         return redirect('/index')->with('pesan', 'Data Buku Berhasil Diubah');
     }
     
-    
-
     public function search(Request $request){
         $batas = 5;
         $cari = $request->kata;
         $data_buku = Buku::where('judul', 'like', "%".$cari."%")->orwhere('penulis', 'like', "%".$cari."%")->paginate($batas);
         $jumlah_buku = $data_buku->count();
         $no = $batas * ($data_buku->currentPage()-1);
+        $data_buku->transform(function ($buku) {
+            if ($buku->rating === null || $buku->rating->isEmpty()) {
+                $buku->total_rating = 0;
+                $buku->jumlah_user_rating = 0;
+                $buku->avg_rating = 'Not Available';
+            } else {
+                $total_rating = $buku->rating->sum('rate');
+                $jumlah_user_rating = $buku->rating->count();
+                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
+                
+                $buku->total_rating = $total_rating;
+                $buku->jumlah_user_rating = $jumlah_user_rating;
+                $buku->avg_rating = $avg_rating;
+            }
+    
+            return $buku;
+        });
 
         return view('buku.search', compact('data_buku', 'no', 'jumlah_buku', 'cari'));
     }
@@ -139,4 +191,31 @@ class BukuController extends Controller
 
         return redirect()->back();
     }
+
+    public function rate(Request $request, $id) {
+        $buku = Buku::findOrFail($id);
+        $user_id = auth()->id();
+    
+        // Cek apakah user sudah memberikan rating untuk buku ini sebelumnya
+        $existingRating = Rating::where('user_id', $user_id)
+                                ->where('buku_id', $id)
+                                ->first();
+    
+        if ($existingRating) {
+            // Jika sudah ada rating sebelumnya, update rating yang sudah ada
+            $existingRating->update([
+                'rate' => $request->rating,
+            ]);
+        } else {
+            // Jika belum ada rating sebelumnya, buat rating baru
+            $buku->ratings()->create([
+                'user_id' => $user_id,
+                'rate' => $request->rating,
+            ]);
+        }
+    
+        return back()->with('pesanRating', 'Rating berhasil ditambahkan');
+    }
+    
+    
 }

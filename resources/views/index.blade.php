@@ -35,6 +35,7 @@
                 <th>Penulis</th>
                 <th>Harga</th>
                 <th>Tgl. Terbit</th>
+                <th>Rating</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -54,6 +55,14 @@
                     <td>{{$buku->penulis}}</td>
                     <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                     <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
+                    <td>
+                        @if($buku->jumlah_user_rating > 0)
+                            <p>{{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
+                        @else
+                            <p>Not Available</p>
+                        @endif
+                    </td>
+
                     @if(Auth::check() && Auth::user()->level == 'admin')
                     <td>
                         <form action="{{ route('buku.destroy', $buku->id) }}" method="post">

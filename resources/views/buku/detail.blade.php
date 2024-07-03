@@ -35,19 +35,57 @@
         </div>
     </div>
     <br><br>
-    <div class="row">
-    @foreach($buku->galleries()->get() as $gallery)
-        <div class="w-1/4 p-2">
-            <img src="{{ asset($gallery->path) }}" class="cursor-pointer" onclick="openLightbox('{{ asset($gallery->path) }}')" />
-        </div>
-    @endforeach
+    <div class="px-12">
+        <p class="text-2xl font-semibold">Galeri</p>
+        @foreach($buku->galleries()->get() as $gallery)
+            <div class="w-1/4 p-2">
+                <img src="{{ asset($gallery->path) }}" class="cursor-pointer" onclick="openLightbox('{{ asset($gallery->path) }}')" />
+            </div>
+        @endforeach
     </div>
 
     <!-- Lightbox container -->
     <div id="lightbox" class="hidden fixed z-50 inset-0 p-10 bg-black/75 flex items-center justify-center">
         <a href="#" onclick="closeLightbox()" class="bg-white px-3 py-1 text-black absolute right-0 top-0">X</a>
-        <img id="lightbox-image" src="" width="400">
+        <img id="lightbox-image" src="" width="950">
     </div>
+
+    <br><br>
+    <div class="px-12">
+        <p class="text-2xl font-semibold">Beri Rating</p>
+        <form action="{{ route('buku.rate', $buku->id) }}" method="post">
+            @csrf
+            <select name="rating">
+                @if ($buku->rating()->where('user_id', auth()->id())->exists())
+                    @php
+                        $currentRating = $buku->rating()->where('user_id', auth()->id())->first()->rate;
+                    @endphp
+                    <option value="{{ $currentRating }}" selected>{{ $currentRating }} - 
+                        @if ($currentRating == 1)
+                            Sangat Buruk
+                        @elseif ($currentRating == 2)
+                            Buruk
+                        @elseif ($currentRating == 3)
+                            Cukup
+                        @elseif ($currentRating == 4)
+                            Baik
+                        @elseif ($currentRating == 5)
+                            Sangat Baik
+                        @endif
+                    </option>
+                @else
+                    <option value="" disabled selected>Pilih Rating</option>
+                    <option value="1">1 - Sangat Buruk</option>
+                    <option value="2">2 - Buruk</option>
+                    <option value="3">3 - Cukup</option>
+                    <option value="4">4 - Baik</option>
+                    <option value="5">5 - Sangat Baik</option>
+                @endif
+            </select>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" type="submit">Submit</button>
+        </form>
+    </div>
+
 
     <!-- JavaScript -->
     <script>
