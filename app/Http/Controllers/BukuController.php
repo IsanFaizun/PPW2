@@ -71,23 +71,6 @@ class BukuController extends Controller
 
     public function detail($id){
         $buku = Buku::find($id);
-        $buku->transform(function ($buku) {
-            if ($buku->rating === null || $buku->rating->isEmpty()) {
-                $buku->total_rating = 0;
-                $buku->jumlah_user_rating = 0;
-                $buku->avg_rating = 'Not Available';
-            } else {
-                $total_rating = $buku->rating->sum('rate');
-                $jumlah_user_rating = $buku->rating->count();
-                $avg_rating = $jumlah_user_rating > 0 ? $total_rating / $jumlah_user_rating : 'Not Available';
-                
-                $buku->total_rating = $total_rating;
-                $buku->jumlah_user_rating = $jumlah_user_rating;
-                $buku->avg_rating = $avg_rating;
-            }
-    
-            return $buku;
-        });
         return view('buku.detail', compact('buku'));
     }
 
@@ -211,17 +194,28 @@ class BukuController extends Controller
 
     public function rate(Request $request, $id) {
         $buku = Buku::findOrFail($id);
+        $user_id = auth()->id();
     
-        $this->validate($request, [
-            'rating' => 'required|integer|min:1|max:5' // Add validation for rating input
-        ]);
+        // Cek apakah user sudah memberikan rating untuk buku ini sebelumnya
+        $existingRating = Rating::where('user_id', $user_id)
+                                ->where('buku_id', $id)
+                                ->first();
     
-        $buku->rating()->create([
-            'user_id' => auth()->id(),
-            'rate' => $request->rating, // Ensure 'rate' matches the column name in your 'rating' table
-        ]);
+        if ($existingRating) {
+            // Jika sudah ada rating sebelumnya, update rating yang sudah ada
+            $existingRating->update([
+                'rate' => $request->rating,
+            ]);
+        } else {
+            // Jika belum ada rating sebelumnya, buat rating baru
+            $buku->ratings()->create([
+                'user_id' => $user_id,
+                'rate' => $request->rating,
+            ]);
+        }
     
         return back()->with('pesanRating', 'Rating berhasil ditambahkan');
     }
+    
     
 }

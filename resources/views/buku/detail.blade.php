@@ -56,16 +56,36 @@
         <form action="{{ route('buku.rate', $buku->id) }}" method="post">
             @csrf
             <select name="rating">
-                <option value="" disabled selected>Pilih Rating</option>
-                <option value="1">1 - Sangat Buruk</option>
-                <option value="2">2 - Buruk</option>
-                <option value="3">3 - Cukup</option>
-                <option value="4">4 - Baik</option>
-                <option value="5">5 - Sangat Baik</option>
+                @if ($buku->rating()->where('user_id', auth()->id())->exists())
+                    @php
+                        $currentRating = $buku->rating()->where('user_id', auth()->id())->first()->rate;
+                    @endphp
+                    <option value="{{ $currentRating }}" selected>{{ $currentRating }} - 
+                        @if ($currentRating == 1)
+                            Sangat Buruk
+                        @elseif ($currentRating == 2)
+                            Buruk
+                        @elseif ($currentRating == 3)
+                            Cukup
+                        @elseif ($currentRating == 4)
+                            Baik
+                        @elseif ($currentRating == 5)
+                            Sangat Baik
+                        @endif
+                    </option>
+                @else
+                    <option value="" disabled selected>Pilih Rating</option>
+                    <option value="1">1 - Sangat Buruk</option>
+                    <option value="2">2 - Buruk</option>
+                    <option value="3">3 - Cukup</option>
+                    <option value="4">4 - Baik</option>
+                    <option value="5">5 - Sangat Baik</option>
+                @endif
             </select>
             <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" type="submit">Submit</button>
         </form>
     </div>
+
 
     <!-- JavaScript -->
     <script>
