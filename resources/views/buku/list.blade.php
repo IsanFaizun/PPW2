@@ -14,7 +14,7 @@
             @endif
             <div>
                 <p class="text-lg font-medium mb-2">{{$buku->judul}}</p>
-                <a href="" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Lihat detail</a>
+                <a href="{{ route('buku.detail', $buku->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Lihat detail</a>
             </div>
         </div>
     @endforeach

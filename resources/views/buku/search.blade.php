@@ -65,6 +65,10 @@
                             <a class="btn btn-warning" href="{{ route('buku.edit', $buku->id) }}">Edit</a>
                         </form>
                     </td>
+                    @else
+                    <td>
+                        <a class="btn btn-info" href="">Lihat detail</a>
+                    </td>
                     @endif
                 </tr>
             @endforeach

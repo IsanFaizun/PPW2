@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/list', [BukuController::class, 'list'])->name('buku.list');
+Route::get('/detail/{id}', [BukuController::class, 'detail'])->name('buku.detail');
 
 Route::middleware('admin')->group(function () {
     Route::get('/index', [BukuController::class, 'index'])->middleware(['auth', 'verified'])->name('index');

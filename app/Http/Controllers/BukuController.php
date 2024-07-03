@@ -32,6 +32,11 @@ class BukuController extends Controller
         return view('buku.list', compact('data_buku', 'no'));
     }
 
+    public function detail($id){
+        $buku = Buku::find($id);
+        return view('buku.detail', compact('buku'));
+    }
+
     public function create(){
         return view('buku.create');
     }
