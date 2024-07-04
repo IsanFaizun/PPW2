@@ -49,7 +49,7 @@ Route::middleware('admin')->group(function () {
     Route::post('/dashboard/destroy/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
     // Update
     Route::get('/dashboard/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
-    Route::post('/dashboard/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
+    Route::put('/dashboard/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
     // Delete Kategori
     Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');
     // Crud kategori

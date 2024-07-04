@@ -3,7 +3,6 @@
 @section('title', 'Edit Buku')
 @section('header', 'Edit Buku')
 
-
 @section('content')
     <style>
         .primary-button{
@@ -21,6 +20,7 @@
     </style>
     <form action="{{ route('buku.update', $buku->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <table>
             <tr>
                 <td>Judul</td>
@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <td>Tgl. Terbit</td>
-                <td><input type="text" name="tgl_terbit" value="{{ $buku->tgl_terbit }}" class="date form-control" placeholder="yyyy/mm/dd"></td>
+                <td><input type="text" name="tgl_terbit" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d', $buku->tgl_terbit)->format('d/m/Y') }}" class="date form-control" placeholder="dd/mm/yyyy"></td>
             </tr>
             <tr>
                 <td>Thumbnail Saat Ini</td>
@@ -72,7 +72,7 @@
                 <td>
                     <div class="container-fluid">
                         <div class="row align-items-start gap-3">
-                            @foreach($buku->galleries()->get() as $gallery)
+                            @foreach($buku->galleries as $gallery)
                                 <div class="col">
                                     <img src="{{ asset($gallery->path) }}" alt="" width="400"/>
                                 </div>
@@ -94,4 +94,12 @@
             </tr>
         </table>
     </form>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.date').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true
+            });
+        });
+    </script>
 @endsection
