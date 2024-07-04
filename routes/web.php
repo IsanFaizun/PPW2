@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/detail/{id}/rate', [BukuController::class, 'rate'])->name('buku.rate');
     Route::get('/favorite', [BukuController::class, 'favorite'])->name('buku.favorite');
     Route::post('/detail/{id}/favorite', [BukuController::class, 'addToFavorite'])->name('buku.addToFavorite');
-
+    Route::delete('/favorite/{id}', [BukuController::class, 'removeFromFavorite'])->name('buku.removeFromFavorite');
 });
 
 require __DIR__.'/auth.php';

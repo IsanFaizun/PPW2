@@ -216,6 +216,7 @@ class BukuController extends Controller
         }
         return back()->with('pesanRating', 'Rating berhasil ditambahkan');
     }
+    
 
     public function addToFavorite($id) {
         $user_id = auth()->id();
@@ -232,8 +233,20 @@ class BukuController extends Controller
                 'buku_id' => $id,
             ]);
         }
-
         return back()->with('pesanFavorite', 'Buku berhasil ditambahkan ke favorit');
+    }
+
+    public function removeFromFavorite($id) {
+        $user_id = auth()->id();
+        $favorite = Favorite::where('user_id', $user_id)
+                            ->where('buku_id', $id)
+                            ->first();
+
+        if ($favorite) {
+            $favorite->delete();
+        }
+
+        return back()->with('pesanHapusFavorite', 'Buku berhasil dihapus dari favorit');
     }
 
     public function favorite() {
