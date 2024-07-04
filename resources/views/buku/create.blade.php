@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td><button type="submit" class="primary-button">Simpan</button></td>
-                    <td><a href="/index" class="btn btn-secondary">Batal</a></td>
+                    <td><a href="/dashboard" class="btn btn-secondary">Batal</a></td>
                 </tr>
             </table>
         </form>

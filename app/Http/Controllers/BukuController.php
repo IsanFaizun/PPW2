@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Kategori;
 use App\Models\Galeri;
 use App\Models\Rating;
 use App\Models\Favorite;
@@ -90,15 +91,15 @@ class BukuController extends Controller
         $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
         $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
         
-        Buku::create([
+        $buku = Buku::create([
             'judul' => $request -> judul,
             'penulis' => $request -> penulis,
             'harga' => $request -> harga,
             'tgl_terbit' => $request -> tgl_terbit,
             'filename' => $fileName,
             'filepath' => '/storage/' . $filePath
-
         ]);
+
         return redirect('/dashboard')->with('pesan','Data Buku Berhasil Disimpan');
     }
 
@@ -124,12 +125,12 @@ class BukuController extends Controller
             'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
         ]);
     
-        $data = [
+        $buku = Buku::update([
             'judul' => $request->judul,
             'penulis' => $request->penulis,
             'tgl_terbit' => $request->tgl_terbit,
             'harga' => $request->harga,
-        ];
+        ]);
     
         // Hanya perbarui thumbnail jika ada file yang diunggah
         if ($request->hasFile('thumbnail')) {
@@ -138,8 +139,6 @@ class BukuController extends Controller
             $data['filename'] = $fileName;
             $data['filepath'] = '/storage/' . $filePath;
         }
-    
-        $buku->update($data);
     
         if ($request->file('gallery')) {
             foreach ($request->file('gallery') as $file) {
@@ -266,5 +265,4 @@ class BukuController extends Controller
     
         return view('buku.populer', compact('data_buku'));
     }
-    
 }

@@ -88,7 +88,7 @@
                 <td>
                     <div class="col mt-3">
                         <button type="submit" class="primary-button">Simpan</button>
-                        <a href="/index" class="btn btn-secondary">Batal</a>
+                        <a href="/dashboard" class="btn btn-secondary">Batal</a>
                     </div>
                 </td>
             </tr>

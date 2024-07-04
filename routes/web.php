@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,7 @@ Route::get('/list', [BukuController::class, 'list'])->name('buku.list');
 Route::get('/detail/{id}', [BukuController::class, 'detail'])->name('buku.detail');
 // Halaman buku populer
 Route::get('/populer', [BukuController::class, 'populer'])->name('buku.populer');
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 
 Route::middleware('admin')->group(function () {
     Route::get('/dashboard', [BukuController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -48,7 +50,10 @@ Route::middleware('admin')->group(function () {
     // Update
     Route::get('/dashboard/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/dashboard/upadate/{id}', [BukuController::class, 'update'])->name('buku.update');
+    // Delete Kategori
     Route::get('/gallery/delete/{id}', [BukuController::class, 'deleteGallery'])->name('buku.deleteGallery');
+    // Crud kategori
+    Route::resource('kategori', KategoriController::class);
 });
 
 // Search

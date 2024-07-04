@@ -19,10 +19,13 @@
                         {{ __('List Buku') }}
                     </x-nav-link>
                     <x-nav-link :href="route('buku.favorite')" :active="request()->routeIs('buku.favorite')">
-                        {{ __('Favorit') }}
+                        {{ __('Favoritku') }}
                     </x-nav-link>
                     <x-nav-link :href="route('buku.populer')" :active="request()->routeIs('buku.populer')">
                         {{ __('Buku Populer') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('kategori.index')" :active="request()->routeIs('kategori.index')">
+                        {{ __('Kategori') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -85,10 +88,13 @@
                 {{ __('List Buku') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('buku.favorite')" :active="request()->routeIs('buku.favorite')">
-                {{ __('Favorit') }}
+                {{ __('Favoritku') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('buku.populer')" :active="request()->routeIs('buku.populer')">
                 {{ __('Buku Populer') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('kategori.index')" :active="request()->routeIs('kategori.index')">
+                {{ __('Kategori') }}
             </x-responsive-nav-link>
         </div>
 
