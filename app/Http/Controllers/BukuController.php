@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Kategori;
 use App\Models\Galeri;
 use App\Models\Rating;
 use App\Models\Favorite;
@@ -85,22 +86,36 @@ class BukuController extends Controller
             'penulis' => 'required|string|max:30',
             'harga' => 'required|numeric',
             'tgl_terbit' => 'required|date',
-            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
+            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png|max:2048'
         ]);
-        $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
-        $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
-        
-        Buku::create([
-            'judul' => $request -> judul,
-            'penulis' => $request -> penulis,
-            'harga' => $request -> harga,
-            'tgl_terbit' => $request -> tgl_terbit,
-            'filename' => $fileName,
-            'filepath' => '/storage/' . $filePath
-
-        ]);
-        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Disimpan');
+    
+        // Periksa apakah ada file yang diunggah
+        if ($request->hasFile('thumbnail')) {
+            $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+            $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+            
+            $data = [
+                'judul' => $request->judul,
+                'penulis' => $request->penulis,
+                'harga' => $request->harga,
+                'tgl_terbit' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->tgl_terbit)->format('Y-m-d'),
+                'filename' => $fileName,
+                'filepath' => '/storage/' . $filePath
+            ];
+        } else {
+            $data = [
+                'judul' => $request->judul,
+                'penulis' => $request->penulis,
+                'harga' => $request->harga,
+                'tgl_terbit' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->tgl_terbit)->format('Y-m-d')
+            ];
+        }
+    
+        Buku::create($data);
+    
+        return redirect('/dashboard')->with('pesan', 'Data Buku Berhasil Disimpan');
     }
+        
 
     public function destroy($id){
         $buku = Buku::find($id);
@@ -120,42 +135,29 @@ class BukuController extends Controller
             'judul' => 'required|string',
             'penulis' => 'required|string|max:30',
             'harga' => 'required|numeric',
-            'tgl_terbit' => 'required|date',
+            'tgl_terbit' => 'required|date_format:d/m/Y',
             'thumbnail' => 'image|mimes:jpeg,jpg,png|max:2048'
         ]);
     
-        $data = [
+        $tgl_terbit = \Carbon\Carbon::createFromFormat('d/m/Y', $request->tgl_terbit)->format('Y-m-d');
+    
+        $buku->update([
             'judul' => $request->judul,
             'penulis' => $request->penulis,
-            'tgl_terbit' => $request->tgl_terbit,
+            'tgl_terbit' => $tgl_terbit,
             'harga' => $request->harga,
-        ];
+        ]);
     
-        // Hanya perbarui thumbnail jika ada file yang diunggah
         if ($request->hasFile('thumbnail')) {
             $fileName = time() . '_' . $request->thumbnail->getClientOriginalName();
             $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
-            $data['filename'] = $fileName;
-            $data['filepath'] = '/storage/' . $filePath;
+            $buku->update([
+                'filename' => $fileName,
+                'filepath' => '/storage/' . $filePath
+            ]);
         }
     
-        $buku->update($data);
-    
-        if ($request->file('gallery')) {
-            foreach ($request->file('gallery') as $file) {
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('uploads', $fileName, 'public');
-    
-                Galeri::create([
-                    'nama_galeri' => $fileName,
-                    'path' => '/storage/' . $filePath,
-                    'foto' => $fileName,
-                    'buku_id' => $id
-                ]);
-            }
-        }
-    
-        return redirect('/dashboard')->with('pesan', 'Data Buku Berhasil Diubah');
+        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Diupdate');
     }
     
     public function search(Request $request){
@@ -266,5 +268,4 @@ class BukuController extends Controller
     
         return view('buku.populer', compact('data_buku'));
     }
-    
 }

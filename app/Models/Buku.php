@@ -31,4 +31,8 @@ class Buku extends Model
     {
         return $this->hasMany(Favorite::class);
     }
+    public function kategori(): HasMany
+    {
+        return $this->hasMany(Kategori::class);
+    }
 }

@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Index')
+@section('title', 'Dashboard')
 @section('header', 'Data Buku')
 
 @section('content')
