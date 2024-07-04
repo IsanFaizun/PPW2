@@ -221,7 +221,7 @@ class BukuController extends Controller
     public function addToFavorite($id) {
         $user_id = auth()->id();
 
-        // Check if the book is already in the user's favorites
+        // Check if the buku is already in the user's favorites
         $existingFavorite = Favorite::where('user_id', $user_id)
                                     ->where('buku_id', $id)
                                     ->first();
@@ -255,4 +255,16 @@ class BukuController extends Controller
 
         return view('buku.favorite', compact('favorites'));
     }
+
+    public function populer() {
+        $data_buku = Buku::with('rating')
+                    ->get()
+                    ->sortByDesc(function($buku) {
+                        return $buku->rating->avg('rate');
+                    })
+                    ->take(10);
+    
+        return view('buku.populer', compact('data_buku'));
+    }
+    
 }

@@ -4,18 +4,6 @@
 @section('header', 'Data Buku')
 
 @section('content')
-    <style>
-        .primary-button{
-            background-color: #007bff;
-            padding-top: 6.5px;
-            padding-bottom: 6.5px;
-            border-radius: 5px;
-            color: white;
-        }
-        .primary-button:hover{
-            background-color: #0275d8;
-        }
-    </style>
     @if(Session::has('pesan'))
         <div class="alert alert-success">{{ Session::get('pesan') }}</div>
     @endif
@@ -23,8 +11,8 @@
         <div class="alert alert-danger">{{ Session::get('pesanHapus') }}</div>
     @endif
     <form action="{{ route('buku.search') }}" method="get">@csrf
-        <input type="text" name="kata" class="form-control mb-4" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
-        <button type="submit" class="primary-button" style="width: 110px; float: right;">Cari</button>
+        <input type="text" name="kata" class="form-control mb-3" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-3" style="width: 110px; float: right;">Cari</button>
     </form>
     <table class="table table-striped">
         <thead>

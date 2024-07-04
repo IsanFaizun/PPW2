@@ -31,9 +31,12 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Halaman list buku
 Route::get('/list', [BukuController::class, 'list'])->name('buku.list');
+// Halaman detail buku
 Route::get('/detail/{id}', [BukuController::class, 'detail'])->name('buku.detail');
-
+// Halaman buku populer
+Route::get('/populer', [BukuController::class, 'populer'])->name('buku.populer');
 
 Route::middleware('admin')->group(function () {
     Route::get('/dashboard', [BukuController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
