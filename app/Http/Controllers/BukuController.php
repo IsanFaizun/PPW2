@@ -156,6 +156,20 @@ class BukuController extends Controller
                 'filepath' => '/storage/' . $filePath
             ]);
         }
+
+        if ($request->file('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+
+                Galeri::create([
+                    'nama_galeri' => $fileName,
+                    'path' => '/storage/' . $filePath,
+                    'foto' => $fileName,
+                    'buku_id' => $id
+                ]);
+            }
+        }
     
         return redirect('/dashboard')->with('pesan','Data Buku Berhasil Diupdate');
     }

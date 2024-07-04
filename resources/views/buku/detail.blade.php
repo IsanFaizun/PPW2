@@ -29,12 +29,12 @@
                 <tr>
                     <td class="font-semibold">Harga</td>
                     <td class="px-2">:</td>
-                    <td>{{ $buku->harga }}</td>
+                    <td>{{"Rp ".number_format($buku->harga, 0, ',', ".")}}</td>
                 </tr>
                 <tr>
                     <td class="font-semibold">Tgl. Terbit</td>
                     <td class="px-2">:</td>
-                    <td>{{ $buku->tgl_terbit }}</td>
+                    <td>{{date('d/m/Y', strtotime($buku->tgl_terbit))}}</td>
                 </tr>
             </table>
             <form action="{{ route('buku.addToFavorite', $buku->id) }}" method="post">
@@ -46,12 +46,15 @@
     <br><br>
     <div class="px-12">
         <p class="text-2xl font-semibold mb-2">Galeri</p>
-        @foreach($buku->galleries()->get() as $gallery)
-            <div class="w-1/4 p-2">
-                <img src="{{ asset($gallery->path) }}" class="cursor-pointer" onclick="openLightbox('{{ asset($gallery->path) }}')" />
-            </div>
-        @endforeach
+        <div class="flex flex-wrap -mx-2">
+            @foreach($buku->galleries()->get() as $gallery)
+                <div class="w-1/4 p-2">
+                    <img src="{{ asset($gallery->path) }}" class="cursor-pointer" onclick="openLightbox('{{ asset($gallery->path) }}')" />
+                </div>
+            @endforeach
+        </div>
     </div>
+
 
     <!-- Lightbox container -->
     <div id="lightbox" class="hidden fixed z-50 inset-0 p-10 bg-black/75 flex items-center justify-center">
