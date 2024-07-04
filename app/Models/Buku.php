@@ -27,4 +27,8 @@ class Buku extends Model
     {
         return $this->hasMany(Rating::class);
     }
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

@@ -24,6 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/detail/{id}/rate', [BukuController::class, 'rate'])->name('buku.rate');
+    Route::get('/favorite', [BukuController::class, 'favorite'])->name('buku.favorite');
+    Route::post('/detail/{id}/favorite', [BukuController::class, 'addToFavorite'])->name('buku.addToFavorite');
+
 });
 
 require __DIR__.'/auth.php';
@@ -47,4 +50,3 @@ Route::middleware('admin')->group(function () {
 
 // Search
 Route::get('/dashboard/search', [BukuController::class, 'search'])->name('buku.search');
-// Delete galeri

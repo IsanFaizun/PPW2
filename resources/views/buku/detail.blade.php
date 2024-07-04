@@ -5,6 +5,12 @@
 
 
 @section('content')
+    @if(Session::has('pesanRating'))
+        <div class="alert alert-success">{{ Session::get('pesanRating') }}</div>
+    @endif
+    @if(Session::has('pesanFavorite'))
+        <div class="alert alert-success">{{ Session::get('pesanFavorite') }}</div>
+    @endif
     <div class="flex">
         <div class="flex-shrink-0">
             <img src="{{ $buku->filepath }}" alt="Gambar Buku" class="h-80 w-80 object-contain">
@@ -32,11 +38,15 @@
                     <td>{{ $buku->tgl_terbit }}</td>
                 </tr>
             </table>
+            <form action="{{ route('buku.addToFavorite', $buku->id) }}" method="post">
+                @csrf
+                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mt-2" type="submit">Tambah ke Favorit</button>
+            </form>
         </div>
     </div>
     <br><br>
     <div class="px-12">
-        <p class="text-2xl font-semibold">Galeri</p>
+        <p class="text-2xl font-semibold mb-2">Galeri</p>
         @foreach($buku->galleries()->get() as $gallery)
             <div class="w-1/4 p-2">
                 <img src="{{ asset($gallery->path) }}" class="cursor-pointer" onclick="openLightbox('{{ asset($gallery->path) }}')" />
@@ -52,7 +62,7 @@
 
     <br><br>
     <div class="px-12">
-        <p class="text-2xl font-semibold">Beri Rating</p>
+        <p class="text-2xl font-semibold mb-2">Beri Rating</p>
         <form action="{{ route('buku.rate', $buku->id) }}" method="post">
             @csrf
             <select name="rating">

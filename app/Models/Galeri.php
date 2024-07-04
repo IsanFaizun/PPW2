@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Galeri extends Model
 {
+    use HasFactory;
     protected $table = 'galeri';
     protected $fillable = [
         'id', 

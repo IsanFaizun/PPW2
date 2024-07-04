@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Galeri;
 use App\Models\Rating;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
@@ -208,14 +209,37 @@ class BukuController extends Controller
             ]);
         } else {
             // Jika belum ada rating sebelumnya, buat rating baru
-            $buku->ratings()->create([
+            $buku->rating()->create([
                 'user_id' => $user_id,
                 'rate' => $request->rating,
             ]);
         }
-    
         return back()->with('pesanRating', 'Rating berhasil ditambahkan');
     }
-    
-    
+
+    public function addToFavorite($id) {
+        $user_id = auth()->id();
+
+        // Check if the book is already in the user's favorites
+        $existingFavorite = Favorite::where('user_id', $user_id)
+                                    ->where('buku_id', $id)
+                                    ->first();
+
+        if (!$existingFavorite) {
+            // Add to favorites if not already favorited
+            Favorite::create([
+                'user_id' => $user_id,
+                'buku_id' => $id,
+            ]);
+        }
+
+        return back()->with('pesanFavorite', 'Buku berhasil ditambahkan ke favorit');
+    }
+
+    public function favorite() {
+        $user_id = auth()->id();
+        $favorites = Favorite::where('user_id', $user_id)->with('buku')->get();
+
+        return view('buku.favorite', compact('favorites'));
+    }
 }
