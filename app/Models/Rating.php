@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rating extends Model
 {
+    use HasFactory;
     protected $table = 'rating';
     protected $fillable = [
         'user_id', 

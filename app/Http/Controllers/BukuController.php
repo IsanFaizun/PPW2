@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Galeri;
 use App\Models\Rating;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
@@ -13,7 +14,7 @@ class BukuController extends Controller
         $this->middleware("auth");
     }
     
-    public function index(){
+    public function dashboard(){
         $batas = 10;
         $jumlah_buku = Buku::count('id');
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
@@ -40,7 +41,7 @@ class BukuController extends Controller
 
         $total_harga = Buku::sum('harga');
 
-        return view('index', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
+        return view('dashboard', compact('data_buku', 'no', 'jumlah_buku', 'total_harga'));
     }
 
     public function list(){
@@ -98,13 +99,13 @@ class BukuController extends Controller
             'filepath' => '/storage/' . $filePath
 
         ]);
-        return redirect('/index')->with('pesan','Data Buku Berhasil Disimpan');
+        return redirect('/dashboard')->with('pesan','Data Buku Berhasil Disimpan');
     }
 
     public function destroy($id){
         $buku = Buku::find($id);
         $buku->delete();
-        return redirect('/index')->with('pesanHapus','Data Buku Berhasil Dihapus');
+        return redirect('/dashboard')->with('pesanHapus','Data Buku Berhasil Dihapus');
     }
 
     public function edit($id){
@@ -154,7 +155,7 @@ class BukuController extends Controller
             }
         }
     
-        return redirect('/index')->with('pesan', 'Data Buku Berhasil Diubah');
+        return redirect('/dashboard')->with('pesan', 'Data Buku Berhasil Diubah');
     }
     
     public function search(Request $request){
@@ -208,14 +209,50 @@ class BukuController extends Controller
             ]);
         } else {
             // Jika belum ada rating sebelumnya, buat rating baru
-            $buku->ratings()->create([
+            $buku->rating()->create([
                 'user_id' => $user_id,
                 'rate' => $request->rating,
             ]);
         }
-    
         return back()->with('pesanRating', 'Rating berhasil ditambahkan');
     }
     
-    
+
+    public function addToFavorite($id) {
+        $user_id = auth()->id();
+
+        // Check if the book is already in the user's favorites
+        $existingFavorite = Favorite::where('user_id', $user_id)
+                                    ->where('buku_id', $id)
+                                    ->first();
+
+        if (!$existingFavorite) {
+            // Add to favorites if not already favorited
+            Favorite::create([
+                'user_id' => $user_id,
+                'buku_id' => $id,
+            ]);
+        }
+        return back()->with('pesanFavorite', 'Buku berhasil ditambahkan ke favorit');
+    }
+
+    public function removeFromFavorite($id) {
+        $user_id = auth()->id();
+        $favorite = Favorite::where('user_id', $user_id)
+                            ->where('buku_id', $id)
+                            ->first();
+
+        if ($favorite) {
+            $favorite->delete();
+        }
+
+        return back()->with('pesanHapusFavorite', 'Buku berhasil dihapus dari favorit');
+    }
+
+    public function favorite() {
+        $user_id = auth()->id();
+        $favorites = Favorite::where('user_id', $user_id)->with('buku')->get();
+
+        return view('buku.favorite', compact('favorites'));
+    }
 }
