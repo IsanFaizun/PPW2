@@ -20,6 +20,7 @@
             @endif
             <div>
                 <p class="text-lg font-medium mb-2">{{$buku->judul}}</p>
+                <p class="text-lg font-medium mb-2">{{$buku->penulis}}</p>
                 @if($buku->jumlah_user_rating > 0)
                     <p class="text-lg font-medium mb-2">{{ number_format($buku->avg_rating, 2) }} ({{ $buku->jumlah_user_rating }} users)</p>
                 @else
