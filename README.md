@@ -1,5 +1,5 @@
 ## Keterangan Commit Sebelumnya
-- Init : Buat Route, Views, dan Blade
+- Init : Buat proyek baru Laravel Route, Views, dan Blade
 - Per 4 : Controller & Migration
 - Per 5 : Models, Factory, dan Seeder
 - Per 6 : CRUD ->Tambah function create-store, destroy, edit-update
