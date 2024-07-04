@@ -7,24 +7,38 @@
     @if(Session::has('pesanHapusFavorite'))
         <div class="alert alert-success">{{ Session::get('pesanHapusFavorite') }}</div>
     @endif
-    <div class="px-12">
+    <div class="container mx-auto px-4">
         @if($favorites->isEmpty())
             <p>Anda belum memiliki buku favorit.</p>
         @else
-            <ul>
-                @foreach($favorites as $favorite)
-                    <li>
-                        <a href="{{ route('buku.detail', $favorite->buku->id) }}">
-                            {{ $favorite->buku->judul }}
-                        </a>
-                        <form action="{{ route('buku.removeFromFavorite', $favorite->buku->id) }}" method="post" class="ml-2">
-                            @csrf
-                            @method('DELETE')
-                            <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded" type="submit">Hapus</button>
-                        </form>
-                    </li>
-                @endforeach
-            </ul>
+            <div class="overflow-x-auto">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Judul Buku</th>
+                            <th>Penulis</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($favorites as $key => $favorite)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $favorite->buku->judul }}</td>
+                                <td>{{ $favorite->buku->penulis }}</td>
+                                <td>
+                                    <form action="{{ route('buku.removeFromFavorite', $favorite->buku->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @endif
     </div>
 @endsection

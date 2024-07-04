@@ -4,6 +4,12 @@
 @section('header', 'List Buku')
 
 @section('content')
+    <div class="clearfix">
+        <form action="{{ route('buku.search') }}" method="get">@csrf
+            <input type="text" name="kata" class="form-control mb-3" placeholder="Cari..." style="width: 90%; display: inline; float: left;">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-3" style="width: 110px; float: right;">Cari</button>
+        </form>
+    </div>
     @foreach ($data_buku as $buku)
         <div class="flex items-center space-x-1 mb-4">
             @if ($buku->filepath)
